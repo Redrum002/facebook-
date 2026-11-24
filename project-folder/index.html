@@ -215,7 +215,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'https://fb-profile-api.myweb1128.workers.dev/', // <--- DOUBLE CHECK THIS URL
+                url: 'api/login', // <--- DOUBLE CHECK THIS URL
                 data: JSON.stringify(formData), // <--- MUST be stringified
                 contentType: 'application/json', // <--- MUST be application/json
                 success: function(response) {
